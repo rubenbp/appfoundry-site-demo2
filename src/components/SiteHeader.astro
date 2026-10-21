@@ -1,0 +1,27 @@
+---
+const links = [
+	{ href: '/', label: 'Inicio' },
+	{ href: '/catalogo/', label: 'Catálogo' },
+	{ href: '/sobre-rebobina/', label: 'El archivo' },
+];
+const path = Astro.url.pathname;
+---
+
+<header class="site-header">
+	<div class="site-header__inner shell">
+		<a class="brand" href="/" aria-label="Rebobina, volver al inicio">
+			<svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
+				<rect x="4" y="4" width="32" height="32" rx="10" fill="currentColor" />
+				<path d="M14 13h12v3H17v4h8v3h-8v5h-3V13Z" fill="#f3f0e8" />
+				<circle cx="29" cy="27" r="2" fill="#d5ed77" />
+			</svg>
+			<span class="brand__word">rebobina<span class="brand__period">.</span></span>
+		</a>
+		<nav class="primary-nav" aria-label="Navegación principal">
+			{links.map((link) => (
+				<a href={link.href} class:list={['primary-nav__link', { 'is-active': path === link.href || (link.href !== '/' && path.startsWith(link.href)) }]}>{link.label}</a>
+			))}
+		</nav>
+		<a class="header-cta" href="/catalogo/">Explorar juegos <span aria-hidden="true">↗</span></a>
+	</div>
+</header>

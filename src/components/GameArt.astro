@@ -1,0 +1,21 @@
+---
+import type { GameArtKey } from '../data/game-art';
+
+interface Props {
+    visual: GameArtKey;
+    palette: string;
+    large?: boolean;
+    transitionId?: string;
+}
+
+const { visual, palette, large = false, transitionId } = Astro.props;
+---
+
+<div class:list={['game-art', palette, 'visual-' + visual, { 'game-art--large': large }]} style={transitionId ? 'view-transition-name: art-' + transitionId : undefined} aria-hidden="true">
+    <div class="game-art__shine"></div>
+    <span class="game-art__pixel game-art__pixel--one"></span>
+    <span class="game-art__pixel game-art__pixel--two"></span>
+    <span class="game-art__pixel game-art__pixel--three"></span>
+    <img class="game-art__scene" src={'/art/' + visual + '.svg'} alt="" width="480" height="280" loading={large ? 'eager' : 'lazy'} decoding="async" />
+    <div class="game-art__label"><span>REBOBINA / ART</span><span>PRESS START <i></i></span></div>
+</div>

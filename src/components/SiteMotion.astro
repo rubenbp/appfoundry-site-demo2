@@ -1,0 +1,30 @@
+<script>
+	const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const elements = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
+	let observer: IntersectionObserver | undefined;
+
+	function revealAll() {
+		observer?.disconnect();
+		elements.forEach((element) => element.classList.remove('reveal-pending'));
+	}
+
+	if (!preference.matches && 'IntersectionObserver' in window) {
+		observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.remove('reveal-pending');
+					observer?.unobserve(entry.target);
+				}
+			});
+		}, { rootMargin: '0px 0px -32px 0px', threshold: 0.05 });
+
+		const belowViewport = elements.filter((element) => element.getBoundingClientRect().top >= window.innerHeight);
+		belowViewport.forEach((element) => {
+			element.classList.add('reveal-pending');
+			observer?.observe(element);
+		});
+	}
+
+	preference.addEventListener('change', revealAll);
+	window.addEventListener('pageshow', (event) => { if (event.persisted) revealAll(); });
+</script>

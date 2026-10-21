@@ -1,0 +1,33 @@
+---
+import GameArt from './GameArt.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	game: CollectionEntry<'juegos'>;
+	compact?: boolean;
+	index?: number;
+}
+
+const { game, compact = false, index = 0 } = Astro.props;
+---
+
+<article
+	class:list={['game-card', { 'game-card--compact': compact }]}
+	data-game-card
+	data-reveal
+	style={'--reveal-delay:' + (index % 4) * 50 + 'ms'}
+	data-title={game.data.title.toLowerCase()}
+	data-platform={game.data.platform.toLowerCase()}
+	data-genre={game.data.genre.toLowerCase()}
+	data-generation={game.data.generation}
+>
+	<a class="game-card__link" href={'/juegos/' + game.id + '/'} aria-label={'Ver ficha de ' + game.data.title}>
+		<GameArt visual={game.data.visual} palette={game.data.palette} transitionId={game.id} />
+		<div class="game-card__body">
+			<div class="game-card__meta"><span>{game.data.platform}</span><span>{game.data.year}</span></div>
+			<h3 style={'view-transition-name: title-' + game.id}>{game.data.title}</h3>
+			<p class="game-card__summary">{game.data.summary}</p>
+			<div class="game-card__foot"><span>{game.data.genre}</span><span class="game-card__rating"><span aria-hidden="true">✳</span> {game.data.rating.toFixed(1)}</span></div>
+		</div>
+	</a>
+</article>

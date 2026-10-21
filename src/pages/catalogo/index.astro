@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import GameCard from '../../components/GameCard.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { generations } from '../../data/catalog';
+
+const games = [...await getCollection('juegos')].sort((a, b) => a.data.title.localeCompare(b.data.title, 'es'));
+const genres = [...new Set(games.map((game) => game.data.genre))].sort((a, b) => a.localeCompare(b, 'es'));
+const platforms = [...new Set(games.map((game) => game.data.platform))].sort((a, b) => a.localeCompare(b, 'es'));
+---
+
+<SiteLayout title="Catálogo — Rebobina" description="Explora videojuegos clásicos por consola, género y época.">
+	<section class="catalog-hero shell">
+		<div><p class="eyebrow"><span class="status-dot"></span> La biblioteca</p><h1>Elige tu<br /><span>siguiente nivel.</span></h1></div>
+		<p>Clásicos que caben en una tarde y aventuras que se quedan contigo años. Encuentra tu próxima partida.</p>
+		<div class="catalog-hero__index"><span>ÍNDICE DEL ARCHIVO</span><strong>001—{String(games.length).padStart(3, '0')}</strong><span>ACTUALIZADO CON CARIÑO</span></div>
+	</section>
+
+	<section class="catalog-section shell" aria-labelledby="catalog-title">
+		<div class="catalog-toolbar">
+			<div class="search-wrap">
+				<label class="search-label" for="game-search">Busca en el archivo</label>
+				<div class="search-field"><span aria-hidden="true">⌕</span><input id="game-search" type="search" placeholder="Un título, una consola…" autocomplete="off" /><kbd>/</kbd></div>
+			</div>
+			<div class="platform-filter"><label for="platform-filter">Consola</label><select id="platform-filter"><option value="">Todas las consolas</option>{platforms.map((platform) => <option value={platform.toLowerCase()}>{platform}</option>)}</select></div>
+			<div class="platform-filter"><label for="generation-filter">Época</label><select id="generation-filter"><option value="">Todas las épocas</option>{generations.map((generation) => <option value={generation}>{generation}</option>)}</select></div>
+			<button class="filter-reset" id="filter-reset" type="button" disabled>Limpiar filtros <span aria-hidden="true">↺</span></button>
+		</div>
+		<div class="genre-filter" aria-label="Filtrar por género">
+			<button class="filter-chip is-selected" type="button" data-genre-filter="" aria-label="Todo el archivo" aria-pressed="true">Todo el archivo <span data-genre-count>{games.length}</span></button>
+			{genres.map((genre) => <button class="filter-chip" type="button" data-genre-filter={genre.toLowerCase()} aria-label={genre} aria-pressed="false">{genre}<span data-genre-count>{games.filter((game) => game.data.genre === genre).length}</span></button>)}
+		</div>
+		<div class="catalog-results-bar"><h2 id="catalog-title">Juegos para volver</h2><p id="catalog-count" aria-live="polite">{games.length} juegos en el archivo</p></div>
+		<div class="game-grid game-grid--catalog" id="game-grid">
+			{games.map((game, index) => <GameCard game={game} index={index} />)}
+		</div>
+		<div class="empty-state" id="empty-state" hidden><span class="empty-state__mark" aria-hidden="true">⌕</span><h3>Esa partida aún no está aquí.</h3><p>Prueba otro título o vuelve al archivo completo para descubrir algo distinto.</p><button class="button button--dark" id="empty-reset" type="button">Ver todos los juegos <span aria-hidden="true">↗</span></button></div>
+	</section>
+
+	<section class="catalog-note"><div class="shell"><span class="catalog-note__spark">✳</span><p>Cada ficha guarda lo esencial para elegir bien: de qué va, cuánto dura y con quién jugar.</p><a href="/sobre-rebobina/">Cómo construimos el archivo <span aria-hidden="true">↗</span></a></div></section>
+
+	<script>import '../../scripts/catalog';</script>
+</SiteLayout>
