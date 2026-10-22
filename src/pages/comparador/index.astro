@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import GameArt from '../../components/GameArt.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+const games = [...await getCollection('juegos')].sort((a, b) => a.data.title.localeCompare(b.data.title, 'es'));
+const slots = Array.from({ length: 4 }, (_, index) => games[index < 2 ? index : -1] ?? null);
+const rows = [
+	{ key: 'summary', label: 'De qué va' },
+	{ key: 'year', label: 'Año' },
+	{ key: 'platform', label: 'Plataforma' },
+	{ key: 'generation', label: 'Época' },
+	{ key: 'genre', label: 'Género' },
+	{ key: 'developer', label: 'Desarrollo' },
+	{ key: 'publisher', label: 'Edición' },
+	{ key: 'players', label: 'Jugadores' },
+	{ key: 'playtime', label: 'Duración' },
+	{ key: 'session', label: 'Una sesión' },
+	{ key: 'difficulty', label: 'Dificultad' },
+	{ key: 'rating', label: 'Valoración de ejemplo' },
+] as const;
+const data = Object.fromEntries(games.map((game) => [game.id, game.data]));
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<SiteLayout title="Comparador de juegos — Rebobina" description="Compara los datos de hasta cuatro videojuegos clásicos del archivo Rebobina.">
+	<section class="compare-intro shell">
+		<p class="eyebrow"><span class="status-dot"></span> El archivo, cara a cara</p>
+		<h1>Compara tus <span>partidas.</span></h1>
+		<p>Elige hasta cuatro juegos y descubre sus diferencias de un vistazo. Cambia cualquier selección cuando quieras; pulsa el título para abrir la ficha completa.</p>
+	</section>
+	<section class="compare-section shell" aria-label="Comparativa de juegos">
+		<p class="compare-hint" id="compare-hint">Desliza la tabla horizontalmente para ver las cuatro columnas en pantallas pequeñas.</p>
+		<div class="compare-scroll" role="region" aria-label="Tabla comparativa, desplazable horizontalmente" tabindex="0" aria-describedby="compare-hint">
+			<table class="compare-table">
+				<thead><tr>
+					<th scope="col" class="compare-corner">DATOS<br />DEL JUEGO</th>
+					{slots.map((game, index) => <th scope="col" class="compare-column" data-slot={index}>
+						<label for={`compare-game-${index}`}>Juego {index + 1}</label>
+						<select id={`compare-game-${index}`} data-compare-select>
+							<option value="" selected={!game}>Sin juego</option>
+							{games.map((option) => <option value={option.id} selected={game?.id === option.id}>{option.data.title}</option>)}
+						</select>
+						<div class="compare-hero" hidden={!game}>
+							<div class="compare-art">{game && <GameArt visual={game.data.visual} palette={game.data.palette} />}</div>
+							<a class="compare-title" href={game ? `/juegos/${game.id}/` : '#'}>{game?.data.title}</a>
+							<span class="compare-visit">Ver ficha completa ↗</span>
+						</div>
+						<p class="compare-placeholder" hidden={!!game}>Elige un juego para comparar.</p>
+					</th>)}
+				</tr></thead>
+				<tbody>{rows.map((row) => <tr>
+					<th scope="row">{row.label}</th>
+					{slots.map((game, index) => <td data-slot={index} data-field={row.key}>{game ? (row.key === 'rating' ? game.data.rating.toFixed(1) : game.data[row.key]) : '—'}</td>)}
+				</tr>)}</tbody>
+			</table>
+		</div>
+		<p class="compare-note">Las valoraciones, duraciones y dificultades son orientativas en esta demo. El año puede variar según la región.</p>
+	</section>
+	<script type="application/json" id="compare-data" set:html={json} />
+	<script>import '../../scripts/compare';</script>
+</SiteLayout>
