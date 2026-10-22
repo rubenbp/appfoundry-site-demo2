@@ -52,6 +52,7 @@ Preparación: [issue #13 de la Factory](https://github.com/rubenbp/app-foundry/i
 - `/`: portada editorial con una selección del archivo.
 - `/catalogo/`: búsqueda por título, género y plataforma.
 - `/comparador/`: tabla de metadatos de hasta cuatro juegos, con selección independiente y acceso a cada ficha. La URL guarda las cuatro posiciones en `?juegos=id1,,id3,` (las vacías se conservan); sin parámetro muestra dos juegos iniciales. Se puede recargar o compartir el enlace.
+- `/elige-tu-partida/`: sugerencia guiada según tiempo disponible, dificultad y compañía. Solo propone fichas cuya duración orientativa de una sesión cabe completa en el tiempo elegido; si no hay coincidencias invita a cambiar las respuestas. Sin cuentas ni seguimiento.
 - `/juegos/<id>/`: ficha individual generada desde Markdown.
 - `/sobre-rebobina/`: propósito y principios del archivo.
 

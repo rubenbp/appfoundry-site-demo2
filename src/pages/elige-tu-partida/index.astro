@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+const games = [...await getCollection('juegos')]
+	.sort((a, b) => a.data.title.localeCompare(b.data.title, 'es'))
+	.map(({ id, data }) => ({ id, title: data.title, summary: data.summary, session: data.session, difficulty: data.difficulty, players: data.players, platform: data.platform, genre: data.genre }));
+const json = JSON.stringify(games).replace(/</g, '\\u003c');
+---
+
+<SiteLayout title="Elige tu partida — Rebobina" description="Descubre un videojuego clásico según el tiempo que tienes, la dificultad y con quién quieres jugar.">
+	<section class="selector-page shell">
+		<div class="selector-intro">
+			<p class="eyebrow"><span class="status-dot"></span> Descubrimiento guiado · 3 decisiones</p>
+			<h1>¿No sabes <span>a qué jugar?</span></h1>
+			<p>Cuéntanos cómo es tu próxima partida. Buscaremos una ficha que encaje con tus ganas de jugar hoy.</p>
+		</div>
+		<div class="selector-panel">
+			<form id="selector-form" class="selector-form">
+				<label for="selector-minutes">01 / ¿Cuánto tiempo tienes?</label>
+				<select id="selector-minutes" name="minutes"><option value="15">Hasta 15 minutos</option><option value="30" selected>Hasta 30 minutos</option><option value="60">Hasta una hora</option></select>
+				<label for="selector-difficulty">02 / ¿Qué nivel te apetece?</label>
+				<select id="selector-difficulty" name="difficulty"><option value="cualquiera">Cualquiera</option><option value="Suave">Suave</option><option value="Media">Media</option><option value="Exigente">Exigente</option></select>
+				<label for="selector-company">03 / ¿Con quién juegas?</label>
+				<select id="selector-company" name="company"><option value="solo">En solitario</option><option value="acompanado">Con alguien</option></select>
+				<button class="button button--dark" type="submit">Sugerir una partida ↗</button>
+			</form>
+			<div class="selector-side">
+				<p class="eyebrow">TU PRÓXIMO CARTUCHO / ✳</p>
+				<div id="selector-result" class="selector-result" aria-live="polite" aria-atomic="true" hidden></div>
+				<p class="selector-placeholder">Tres pistas. Una partida que quizá no esperabas.</p>
+				<p class="selector-disclaimer">Las duraciones y dificultades son orientativas. Si cambias de idea, ajusta tus respuestas y vuelve a buscar.</p>
+			</div>
+		</div>
+		<p class="selector-bottom">¿Prefieres explorar por tu cuenta? <a class="text-link" href="/catalogo/">Abrir el catálogo →</a></p>
+	</section>
+	<script type="application/json" id="selector-data" set:html={json} />
+	<script>import '../../scripts/selector';</script>
+</SiteLayout>

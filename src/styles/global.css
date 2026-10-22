@@ -51,7 +51,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .brand__mark { width: 37px; height: 37px; color: var(--ink); }
 .brand__word { font: 800 22px/1 var(--font-display); letter-spacing: -1.3px; }
 .brand__period { color: #f07054; }
-.primary-nav { display: flex; align-items: center; gap: 34px; }
+.primary-nav { display: flex; align-items: center; gap: clamp(10px, 2vw, 34px); }
 .primary-nav__link { position: relative; padding-block: 9px; color: #625f57; font-size: 13px; font-weight: 650; transition: color 160ms ease; }
 .primary-nav__link:hover, .primary-nav__link.is-active { color: var(--ink); }
 .primary-nav__link.is-active::after { position: absolute; right: 0; bottom: 1px; left: 0; height: 2px; border-radius: 2px; background: var(--tomato); content: ''; }
@@ -193,6 +193,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .catalog-note p { max-width: 560px; margin: 0; font-size: 13px; line-height: 1.6; }
 .catalog-note a { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; font-size: 10px; font-weight: 700; }
 
+.selector-page { padding-block: 76px 100px; }
+.selector-intro { max-width: 690px; }
+.selector-intro h1 { margin: 20px 0; font: 800 clamp(50px, 7vw, 88px)/1 var(--font-display); letter-spacing: -.08em; }
+.selector-intro h1 span { color: #e76e53; }
+.selector-intro > p:last-child { max-width: 550px; color: #5f5d56; font-size: 16px; line-height: 1.7; }
+.selector-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 42px; }
+.selector-form, .selector-side { padding: clamp(22px, 4vw, 46px); border-radius: 24px; }
+.selector-form { display: flex; flex-direction: column; align-items: start; border: 1px solid var(--line); background: var(--surface); }
+.selector-form label { margin: 0 0 11px; font: 500 11px var(--font-mono); }
+.selector-form select { width: 100%; min-height: 52px; margin-bottom: 28px; padding: 0 14px; border: 1px solid #d5d1c6; border-radius: 10px; background: var(--paper); color: var(--ink); }
+.selector-form .button { cursor: pointer; }
+.selector-side { display: flex; flex-direction: column; align-items: start; min-height: 430px; background: var(--ink); color: var(--surface); }
+.selector-side .eyebrow { color: var(--acid); }
+.selector-placeholder { margin: auto 0; font: 750 clamp(30px, 4vw, 48px)/1.12 var(--font-display); letter-spacing: -.06em; }
+.selector-result { margin-block: auto; padding-block: 30px; }
+.selector-result h2 { margin: 10px 0 18px; font: 750 clamp(30px, 4vw, 48px)/1.12 var(--font-display); letter-spacing: -.06em; }
+.selector-result p { max-width: 480px; color: #d1d1c6; font-size: 13px; line-height: 1.65; }
+.selector-result .selector-result__meta { color: var(--acid); font: 500 10px var(--font-mono); }
+.selector-result .button { margin-top: 10px; }
+.selector-result:not([hidden]) + .selector-placeholder { display: none; }
+.selector-disclaimer { margin: auto 0 0; color: #aeb3a8; font-size: 10px; line-height: 1.6; }
+.selector-bottom { display: flex; flex-wrap: wrap; gap: 9px; align-items: baseline; margin-top: 30px; color: var(--muted); font-size: 12px; }
+
 .detail-shell { padding-top: 26px; }
 .breadcrumbs { display: flex; flex-wrap: wrap; gap: 10px; color: #77746b; font: 500 9px/1.5 var(--font-mono); }
 .breadcrumbs a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
@@ -267,7 +290,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 	.site-header__inner { grid-template-columns: 1fr auto; min-height: 70px; gap: 12px; }
 	.brand__mark { width: 33px; height: 33px; }
 	.brand__word { font-size: 20px; }
-	.primary-nav { grid-row: 2; grid-column: 1 / -1; justify-content: space-between; gap: 14px; padding-bottom: 11px; }
+	.primary-nav { grid-row: 2; grid-column: 1 / -1; justify-content: center; flex-wrap: wrap; gap: 5px 14px; padding-bottom: 11px; }
 	.primary-nav__link { padding-block: 3px; font-size: 11px; }
 	.primary-nav__link.is-active::after { bottom: -4px; }
 	.header-cta { grid-row: 1; grid-column: 2; padding: 10px 12px; font-size: 10px; }
@@ -366,6 +389,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 	.game-grid { gap: 8px; }
 	.game-card h3 { font-size: 13px; }
 	.game-card__foot { font-size: 8px; }
+}
+
+@media (max-width: 720px) {
+	.selector-page { padding-block: 50px 70px; }
+	.selector-panel { grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
+	.selector-side { min-height: 300px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
