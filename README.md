@@ -1,6 +1,6 @@
 # Rebobina · archivo de videojuegos clásicos
 
-Demo de un catálogo editorial de videojuegos retro, creado con Astro para servir de base al TFM. El sitio está en español y genera páginas estáticas desde 33 fichas Markdown tipadas. Sus siete géneros tienen contenido en las tres épocas del archivo.
+Demo de un catálogo editorial de videojuegos retro, creado con Astro para servir de base al TFM. El sitio está en español y genera páginas estáticas desde 34 fichas Markdown tipadas. Sus siete géneros tienen contenido en las tres épocas del archivo.
 
 ## Empezar
 

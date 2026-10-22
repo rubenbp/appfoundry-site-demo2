@@ -47,21 +47,41 @@ test('todos los géneros tienen juegos en las tres épocas', async ({ page }) =>
 		await page.getByRole('button', { name: 'Todo el archivo', exact: true }).click();
 	}
 	await page.getByRole('button', { name: 'Limpiar filtros' }).click();
-	await expect(page.locator('[data-game-card]:visible')).toHaveCount(33);
+	await expect(page.locator('[data-game-card]:visible')).toHaveCount(34);
 	await capture(page, 'catalogo.png');
 });
 
 test('muestra la época de la URL y limpia todos los filtros', async ({ page }) => {
 	await page.goto('/catalogo/?generacion=8%20bits');
 	await expect(page.getByLabel('Época', { exact: true })).toHaveValue('8 bits');
-	await expect(page.locator('[data-game-card]:visible')).toHaveCount(8);
+	await expect(page.locator('[data-game-card]:visible')).toHaveCount(9);
 	await page.getByRole('searchbox').fill('un juego que no existe');
 	await expect(page.getByRole('heading', { name: 'Esa partida aún no está aquí.' })).toBeVisible();
 	await page.getByRole('button', { name: 'Ver todos los juegos' }).click();
 	await expect(page.getByRole('searchbox')).toHaveValue('');
 	await expect(page.getByLabel('Época', { exact: true })).toHaveValue('');
 	await expect(page).toHaveURL(/\/catalogo\/$/);
-	await expect(page.locator('[data-game-card]:visible')).toHaveCount(33);
+	await expect(page.locator('[data-game-card]:visible')).toHaveCount(34);
+});
+
+test('encuentra Super Mario Bros. entre las plataformas de NES y abre su ficha', async ({ page }) => {
+	await page.goto('/catalogo/');
+	await page.getByRole('button', { name: 'Plataformas', exact: true }).click();
+	await page.getByLabel('Consola').selectOption('nes');
+	await page.getByRole('searchbox', { name: 'Busca en el archivo' }).fill('super mario bros');
+	const mario = page.getByRole('link', { name: 'Ver ficha de Super Mario Bros.' });
+	await expect(mario).toBeVisible();
+	await expect(page.locator('[data-game-card]:visible')).toHaveCount(1);
+	await mario.click();
+	await expect(page).toHaveURL(/\/juegos\/super-mario-bros\/$/);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Super Mario Bros.');
+	await expect(page.getByText('1–2 jugadores por turnos')).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Por qué es un icono de Nintendo' })).toBeVisible();
+	await expect(page.getByText('Para Nintendo, Mario pasó a ser mucho más que el protagonista de un cartucho:', { exact: false })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Ten en cuenta' })).toBeVisible();
+	const illustration = page.locator('.detail-hero__art img');
+	await expect(illustration).toHaveAttribute('src', '/art/super-mario-bros.svg');
+	await expect.poll(() => illustration.evaluate((image) => image instanceof HTMLImageElement ? image.naturalWidth : 0)).toBeGreaterThan(0);
 });
 
 test('la ficha ampliada se lee en móvil con movimiento reducido', async ({ page }) => {
