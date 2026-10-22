@@ -76,6 +76,8 @@ test('encuentra Super Mario Bros. entre las plataformas de NES y abre su ficha',
 	await expect(page).toHaveURL(/\/juegos\/super-mario-bros\/$/);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Super Mario Bros.');
 	await expect(page.getByText('1–2 jugadores por turnos')).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Por qué es un icono de Nintendo' })).toBeVisible();
+	await expect(page.getByText('Para Nintendo, Mario pasó a ser mucho más que el protagonista de un cartucho:', { exact: false })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Ten en cuenta' })).toBeVisible();
 	const illustration = page.locator('.detail-hero__art img');
 	await expect(illustration).toHaveAttribute('src', '/art/super-mario-bros.svg');

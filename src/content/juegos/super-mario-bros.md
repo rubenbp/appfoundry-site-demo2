@@ -24,6 +24,12 @@ Una pantalla que se desplaza, unos bloques suspendidos y un Goomba que viene de 
 
 La velocidad no está reñida con la curiosidad. Una vez conoces el trazado de un nivel, puedes intentar llegar antes al banderín o detenerte a golpear un bloque que habías pasado por alto. Las zonas secretas y las tuberías hacen que repetir una fase conocida siga ofreciendo descubrimientos.
 
+## Por qué es un icono de Nintendo
+
+Mario ya había aparecido en otros juegos, pero Super Mario Bros. hizo de su aventura por el Reino Champiñón una imagen reconocible de NES: avanzar hacia la derecha, descubrir un bloque oculto, recoger una seta y alcanzar la bandera. Sus reglas se aprenden jugando y dejan espacio para dominar cada salto. Esa mezcla de entrada sencilla y secretos por descubrir ayudó a convertir el juego en una referencia de las plataformas y a asociar a Mario con Nintendo.
+
+Para Nintendo, Mario pasó a ser mucho más que el protagonista de un cartucho: se convirtió en uno de los rostros de la compañía y en el centro de una serie que ha continuado en nuevas consolas. Su presencia también se extendió a carreras, deportes y otros tipos de juegos. Esta ficha recuerda el punto de partida de esa identidad, sin atribuir al juego de NES las funciones de sus secuelas.
+
 ## Cómo se juega
 
 Te mueves de lado, corres y saltas. Mantener pulsado el botón de carrera cambia la distancia de los saltos, así que conviene soltarlo antes de una plataforma estrecha. Las setas te permiten resistir un golpe, las flores dan un ataque a distancia y algunas tuberías conducen a otras zonas. Al final de cada mundo espera un castillo.
