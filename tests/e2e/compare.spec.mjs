@@ -41,3 +41,40 @@ test('permite acceder a las cuatro columnas en móvil sin recortar la tabla', as
 	const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
 	expect(overflow).toBe(false);
 });
+
+test('conserva los juegos elegidos en la URL al recargar y al compartir el enlace', async ({ page, context }) => {
+	await page.goto('/comparador/');
+	const selectors = page.locator('[data-compare-select]');
+	await selectors.nth(0).selectOption('super-mario-bros');
+	await selectors.nth(1).selectOption('');
+	await selectors.nth(2).selectOption('crash-bandicoot');
+	const link = page.url();
+	expect(new URL(link).searchParams.get('juegos')).toBe('super-mario-bros,,crash-bandicoot,');
+	await page.reload();
+	await expect(selectors.nth(0)).toHaveValue('super-mario-bros');
+	await expect(selectors.nth(1)).toHaveValue('');
+	await expect(selectors.nth(2)).toHaveValue('crash-bandicoot');
+	await expect(page.locator('td[data-slot="2"][data-field="platform"]')).toHaveText('PlayStation');
+	const shared = await context.newPage();
+	await shared.goto(link);
+	await expect(shared.locator('th[data-slot="0"] .compare-title')).toHaveText('Super Mario Bros.');
+	await expect(shared.locator('th[data-slot="1"] .compare-placeholder')).toBeVisible();
+	await expect(shared.locator('th[data-slot="2"] .compare-title')).toHaveText('Crash Bandicoot');
+	await shared.close();
+	await page.goBack();
+	await expect(selectors.nth(2)).toHaveValue('');
+});
+
+test('admite una comparación vacía y descarta identificadores inexistentes', async ({ page }) => {
+	await page.goto('/comparador/?juegos=no-existe,,super-mario-bros,');
+	await expect(page.locator('[data-compare-select]').nth(0)).toHaveValue('');
+	await expect(page.locator('th[data-slot="0"] .compare-placeholder')).toBeVisible();
+	await expect(page.locator('th[data-slot="2"] .compare-title')).toHaveText('Super Mario Bros.');
+	await page.goto('/comparador/');
+	for (const select of await page.locator('[data-compare-select]').all()) await select.selectOption('');
+	await expect(page).toHaveURL(/juegos=%2C%2C%2C/);
+	await page.reload();
+	await expect(page.locator('th[data-slot] .compare-placeholder:visible')).toHaveCount(4);
+	await expect(page.locator('tbody td')).toHaveCount(48);
+	await expect(page.locator('tbody td').first()).toHaveText('—');
+});
