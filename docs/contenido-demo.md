@@ -1,6 +1,6 @@
 # Contenido editorial de la demo
 
-El archivo contiene 33 juegos. Cada uno de los siete géneros tiene al menos cuatro fichas y está representado en 8, 16 y 32 bits. Las categorías se construyen desde el contenido existente, y sus contadores se actualizan con la consola, época y búsqueda activas.
+El archivo contiene 34 juegos. Cada uno de los siete géneros tiene al menos cuatro fichas y está representado en 8, 16 y 32 bits. Las categorías se construyen desde el contenido existente, y sus contadores se actualizan con la consola, época y búsqueda activas.
 
 ## Criterios para una ficha
 
